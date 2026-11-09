@@ -30,9 +30,9 @@ public class Usuario {
         return usuario;
     }
 
-    public Pregunta generarPregunta(String titulo, String texto ){
+    public Pregunta generarPregunta(String titulo, String texto, Categoria categoria ){
         //Creo la pregunta con sus parametros agrgandole la fecha automaticamente
-        Pregunta nuevaPregunta = new Pregunta(titulo, texto);
+        Pregunta nuevaPregunta = new Pregunta(titulo, texto, categoria);
         return nuevaPregunta;
     }
 }
