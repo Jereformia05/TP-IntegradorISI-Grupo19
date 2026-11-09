@@ -1,6 +1,6 @@
 package modelo;
 
-public class Usuario {
+public class Usuario extends Autor {
     private String correoElectronico;
     private String contraseña;
     private TUsuario usuario; // Rol del usuario
@@ -30,9 +30,25 @@ public class Usuario {
         return usuario;
     }
 
+    
     public Pregunta generarPregunta(String titulo, String texto, Categoria categoria ){
         //Creo la pregunta con sus parametros agrgandole la fecha automaticamente
         Pregunta nuevaPregunta = new Pregunta(titulo, texto, categoria);
         return nuevaPregunta;
+    }
+
+    @Override 
+    public Respuesta generarRespuesta(Pregunta p) {
+    
+        String fechaActual = java.time.LocalDate.now().toString();
+        
+        String cuerpoRespuesta = "Respuesta generada por el usuario para la pregunta: " + p.getTitulo();
+        
+        Respuesta nuevaRespuesta = new Respuesta(cuerpoRespuesta, fechaActual);
+        return nuevaRespuesta;
+    }
+
+    public void setEstadoRespuestaAceptada(Respuesta r) {
+        r.setRespuestaAceptada(true);
     }
 }
