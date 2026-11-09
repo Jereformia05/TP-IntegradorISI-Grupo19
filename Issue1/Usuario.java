@@ -29,4 +29,10 @@ public class Usuario {
     public TUsuario getUsuario(){
         return usuario;
     }
+
+    public Pregunta generarPregunta(String titulo, String texto ){
+        //Creo la pregunta con sus parametros agrgandole la fecha automaticamente
+        Pregunta nuevaPregunta = new Pregunta(titulo, texto);
+        return nuevaPregunta;
+    }
 }
