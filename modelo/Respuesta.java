@@ -5,13 +5,15 @@ public class Respuesta {
     private String cuerpo;
     private String fecha;
     private boolean respuestaAceptada;
+    private Autor autor;
 
-    public Respuesta(String cuerpo, String fecha) {
+    public Respuesta(String cuerpo, String fecha, Autor autor) {
         this.cuerpo = cuerpo;
         this.fecha = fecha;
         this.respuestaAceptada = false;
+        this.autor = autor;
     }
-    
+
     public String getCuerpo() {
         return cuerpo;
     }
@@ -35,5 +37,12 @@ public class Respuesta {
     public void setRespuestaAceptada(boolean respuestaAceptada) {
         this.respuestaAceptada = respuestaAceptada;
     }
-    
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
 }

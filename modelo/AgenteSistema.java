@@ -23,7 +23,7 @@ public class AgenteSistema extends Autor {
             DateTimeFormatter.ofPattern("dd/MM/yyyy")
         );
 
-        return new Respuesta(contenido, fecha);
+        return new Respuesta(contenido, fecha, this);
     }
 
     // Comprueba si la pregunta tiene el tag #ia-help.
