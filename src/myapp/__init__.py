@@ -1,6 +1,6 @@
-from flask import flask
+from flask import Flask
 from myapp.config import Config
-from myapp.extension import db
+from myapp.extensions import db
 from myapp.api.health import health_bp
 
 def create_app(config_class=Config):
