@@ -5,6 +5,7 @@ from myapp.api.health import health_bp
 from myapp.config import Config
 from myapp.extensions import db
 from myapp.api.auth import auth_bp
+from myapp.api.answers import answers_bp
 
 
 def create_app(config_class=Config):
@@ -17,4 +18,5 @@ def create_app(config_class=Config):
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
 
+    app.register_blueprint(answers_bp)
     return app
