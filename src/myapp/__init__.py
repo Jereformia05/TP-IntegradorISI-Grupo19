@@ -1,7 +1,10 @@
 from flask import Flask
+
+import myapp.models  # noqa: F401
+from myapp.api.health import health_bp
 from myapp.config import Config
 from myapp.extensions import db
-from myapp.api.health import health_bp
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -13,5 +16,3 @@ def create_app(config_class=Config):
     app.register_blueprint(health_bp)
 
     return app
-
-
