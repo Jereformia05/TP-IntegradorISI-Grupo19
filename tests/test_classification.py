@@ -1,6 +1,8 @@
 from myapp.extensions import db
+from myapp.models.category import Category
 from myapp.models.question import Question
 from myapp.models.tag import Tag
+from myapp.models.user import User
 
 
 def test_create_and_get_categories(client):
@@ -27,9 +29,22 @@ def test_create_and_get_tags(client):
 
 def test_question_multiple_tags_without_duplicates(client, app):
     with app.app_context():
+        user = User(
+            email="test_tags@utn.edu.ar",
+            password_hash="hash_de_prueba",
+            role="USUARIO_GENERAL",
+        )
+        category = Category(name="Ingeniería de Software")
+        db.session.add_all([user, category])
+        db.session.flush()
         t1 = Tag(name="flask")
         t2 = Tag(name="sqlalchemy")
-        question = Question()
+        question = Question(
+            title="Como asociar multiples tags sin duplicados?",
+            text="Texto de prueba para el test de clasificacion.",
+            user_id=user.id,
+            category_id=category.id,
+        )
         db.session.add_all([t1, t2, question])
         db.session.commit()
         q_id, t1_id, t2_id = question.id, t1.id, t2.id

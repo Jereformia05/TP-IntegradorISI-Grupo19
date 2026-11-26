@@ -1,7 +1,9 @@
-import pytest 
+import pytest
+
+import myapp.models  # noqa: F401
 from myapp import create_app
 from myapp.extensions import db
-import myapp.models # Importante: carga User, Question, Answer en SQLAlchemy
+
 
 @pytest.fixture
 def app():
@@ -15,6 +17,7 @@ def app():
         db.create_all()
         yield app
         db.drop_all()
+
 
 @pytest.fixture
 def client(app):

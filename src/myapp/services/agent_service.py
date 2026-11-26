@@ -4,7 +4,6 @@ from myapp.services.strategies import LLMStrategy
 
 
 class AgentService:
-
     def __init__(self, strategy: LLMStrategy):
         self.strategy = strategy
 
@@ -16,8 +15,7 @@ class AgentService:
 
     def tiene_tag_ia_help(self, question) -> bool:
         return any(
-            tag.name.lower().strip() in ("#ia-help", "ia-help")
-            for tag in question.tags
+            tag.name.lower().strip() in ("#ia-help", "ia-help") for tag in question.tags
         )
 
     def process_question(self, question):
@@ -31,7 +29,7 @@ class AgentService:
             question_id=question.id,
             user_id=None,
             author_type="AGENT",
-            is_accepted=False
+            is_accepted=False,
         )
 
         db.session.add(answer)

@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+
 from myapp.extensions import db
 from myapp.models.category import Category
 from myapp.models.question import Question
@@ -74,7 +75,9 @@ def assign_tags_to_question(question_id):
     question.tags = tags
     db.session.commit()
 
-    return jsonify({
-        "question_id": question.id,
-        "tags": [t.to_dict() for t in question.tags],
-    }), 200
+    return jsonify(
+        {
+            "question_id": question.id,
+            "tags": [t.to_dict() for t in question.tags],
+        }
+    ), 200

@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+
 from myapp.extensions import db
 from myapp.models.question import Question
 

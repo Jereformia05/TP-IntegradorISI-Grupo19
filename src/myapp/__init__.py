@@ -5,11 +5,9 @@ from myapp.api.answers import answers_bp
 from myapp.api.auth import auth_bp
 from myapp.api.classification import classification_bp
 from myapp.api.health import health_bp
+from myapp.api.questions import questions_bp
 from myapp.config import Config
 from myapp.extensions import db
-from myapp.api.auth import auth_bp
-from myapp.api.answers import answers_bp
-from myapp.api.questions import questions_bp
 
 
 def create_app(config_class=Config):

@@ -1,10 +1,14 @@
 import enum
-from werkzeug.security import generate_password_hash, check_password_hash
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from myapp.extensions import db
+
 
 class TUsuario(enum.Enum):
     ADMIN = "ADMIN"
     USUARIO_GENERAL = "USUARIO_GENERAL"
+
 
 class User(db.Model):
     __tablename__ = "users"
@@ -12,7 +16,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.Enum(TUsuario), default=TUsuario.USUARIO_GENERAL, nullable=False)
+    role = db.Column(
+        db.Enum(TUsuario), default=TUsuario.USUARIO_GENERAL, nullable=False
+    )
 
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)

@@ -1,8 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
+
 from myapp.extensions import db
-from myapp.models.user import User, TUsuario
+from myapp.models.user import TUsuario, User
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
+
 
 @auth_bp.post("/register")
 def register():
@@ -39,12 +41,9 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"error": "Credenciales inválidas"}), 401
 
-    return jsonify({
-        "message": "Autenticación exitosa",
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "role": user.role.value
+    return jsonify(
+        {
+            "message": "Autenticación exitosa",
+            "user": {"id": user.id, "email": user.email, "role": user.role.value},
         }
-    }), 200
-
+    ), 200
