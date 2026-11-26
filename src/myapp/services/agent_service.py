@@ -12,8 +12,9 @@ class AgentService:
 
     def generate_answer(self, question: str) -> str:
         return self.strategy.generate_response(question)
-
-    def tiene_tag_ia_help(self, question) -> bool:
+    
+    @staticmethod
+    def tiene_tag_ia_help(question) -> bool:
         tags = getattr(question, "tags", None) or []
         return any(
             getattr(tag, "name", "").lower().strip() in ("#ia-help", "ia-help")
@@ -28,7 +29,7 @@ class AgentService:
         response_text = self.generate_answer(question_text)
 
         answer = Answer(
-            content=response_text,
+            text=response_text,
             question_id=question.id,
             user_id=None,
             author_type="AGENT",

@@ -32,7 +32,7 @@
             <p class="card-text">{{ ans.text }}</p>
 
             {% if session.get('user_id') == question.user_id and not ans.is_accepted %}
-            <form method="POST" action="{{ url_for('web.accept_answer_view', answer_id=ans.id) }}" class="d-inline">
+            <form method="POST" action="{{ url_for('web.accept_answer_view',question_id=question.id, answer_id=ans.id) }}" class="d-inline">
                 <button type="submit" class="btn btn-sm btn-outline-success">Marcar como Aceptada</button>
             </form>
             {% endif %}
