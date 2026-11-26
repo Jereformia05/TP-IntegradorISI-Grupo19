@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>
+
+                <!-- Agregá aquí tu <form method="POST"> con los campos de email/usuario y contraseña -->
+
+                <div class="text-center mt-3">
+                    <small>¿No tenés cuenta? <a href="{{ url_for('web.register_view') }}">Registrate acá</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

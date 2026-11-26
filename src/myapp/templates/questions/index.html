@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Preguntas Frecuentes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📋 Preguntas de la Comunidad</h2>
+    <a href="{{ url_for('web.create_question_view') }}" class="btn btn-primary">+ Hacer Pregunta</a>
+</div>
+
+{% if not questions %}
+    <div class="alert alert-info">
+        No hay preguntas publicadas aún. ¡Sé el primero en hacer una!
+    </div>
+{% else %}
+    <div class="list-group shadow-sm">
+        {% for q in questions %}
+            <a href="{{ url_for('web.question_detail', question_id=q.id) }}" class="list-group-item list-group-item-action py-3">
+                <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                    <h5 class="mb-0">{{ q.title }}</h5>
+                    <small class="text-muted">Respuestas: {{ q.answers|length }}</small>
+                </div>
+
+                <p class="mb-2 text-secondary">{{ q.content | truncate(150) }}</p>
+
+                <div class="d-flex flex-wrap gap-1">
+                    {% if q.category %}
+                        <span class="badge bg-primary">{{ q.category.name }}</span>
+                    {% endif %}
+                    {% for tag in q.tags %}
+                        <span class="badge bg-secondary">#{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
