@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+
 from myapp.extensions import db
-from myapp.models.user import User, TUsuario
 from myapp.models.question import Question
-from myapp.models.answer import Answer
 from myapp.models.tag import Tag
+from myapp.models.user import TUsuario, User
 from myapp.services.agent_service import process_question_for_agent
 
 web_bp = Blueprint("web", __name__)

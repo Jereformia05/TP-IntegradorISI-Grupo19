@@ -49,5 +49,5 @@ def process_question_for_agent(question):
         return None
     try:
         return _default_agent_service.process_question(question)
-    except Exception:
+    except Exception: # noqa: BLE001
         return None

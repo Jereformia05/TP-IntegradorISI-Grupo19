@@ -1,18 +1,51 @@
 {% extends "base.html" %}
-
 {% block title %}Nueva Pregunta{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-7">
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
-                <h3 class="card-title mb-3">Publicar Nueva Pregunta</h3>
-                <p class="text-muted mb-4">Tip: Agregá el tag <code>#ia-help</code> para recibir una respuesta automática generada por IA.</p>
 
-                <!-- Agregá aquí tu <form method="POST"> con título, contenido, categoría y tags -->
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3>Publicar Nueva Pregunta</h3>
+                <p class="text-muted">Tip: Agrega el tag<code>#ia-help</code>para recibir una respuesta automatica
+                    generada por IA.</p>
+
+                <form method="POST" action="{{ url_for('web.create_question_view') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        <input type="text" name="title" class="form-control" required
+                            placeholder="¿Cómo solucionar el error de migración en Alembic?">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría ID (Opcional)</label>
+                        <input type="number" name="category_id" class="form-control" placeholder="1">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Etiquetas / Tags (separados por coma)</label>
+                        <input type="text" name="tags" class="form-control" placeholder="python, alembic, ia-help">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Contenido / Detalle</label>
+                        <textarea name="content" class="form-control" rows="5" required
+                            placeholder="Describe tu problema en detalle..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Publicar Pregunta</button>
+                    <a href="{{ url_for('web.list_questions') }}">Cancelar</a>
+
+                </form>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}

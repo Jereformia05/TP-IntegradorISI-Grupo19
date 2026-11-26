@@ -7,10 +7,27 @@
     <div class="col-md-6 col-lg-4">
         <div class="card shadow-sm">
             <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4">Crear Cuenta</h3>
+                <h3 class ="card-title text-center mb-4">Crear Cuenta</h3>
 
-                <!-- Agregá aquí tu <form method="POST"> con los campos de registro -->
-
+                <form method="POST" action = "{{ url_for('web.register_view') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="ejemplo@utn.edu.ar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Rol de Usuario</label>
+                        <select class="form-select" id="role" name="role">
+                            <option value="USUARIO_GENERAL">Usuario General</option>
+                            <option value="ADMIN">Administrador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Registrarse</button>
+                </form>
+                
                 <div class="text-center mt-3">
                     <small>¿Ya tenés cuenta? <a href="{{ url_for('web.login_view') }}">Iniciá sesión acá</a></small>
                 </div>
