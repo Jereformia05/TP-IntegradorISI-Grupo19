@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Crear Cuenta</h3>
+
+                <!-- Agregá aquí tu <form method="POST"> con los campos de registro -->
+
+                <div class="text-center mt-3">
+                    <small>¿Ya tenés cuenta? <a href="{{ url_for('web.login_view') }}">Iniciá sesión acá</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

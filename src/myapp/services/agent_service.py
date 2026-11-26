@@ -1,6 +1,6 @@
 from myapp.extensions import db
 from myapp.models.answer import Answer
-from myapp.services.strategies import LLMStrategy
+from myapp.services.strategies import LLMStrategy, MockLLMStrategy
 
 
 class AgentService:
@@ -14,18 +14,21 @@ class AgentService:
         return self.strategy.generate_response(question)
 
     def tiene_tag_ia_help(self, question) -> bool:
+        tags = getattr(question, "tags", None) or []
         return any(
-            tag.name.lower().strip() in ("#ia-help", "ia-help") for tag in question.tags
+            getattr(tag, "name", "").lower().strip() in ("#ia-help", "ia-help")
+            for tag in tags
         )
 
     def process_question(self, question):
         if not self.tiene_tag_ia_help(question):
             return None
 
-        response_text = self.generate_answer(question.text)
+        question_text = getattr(question, "content", None) or getattr(question, "text", "")
+        response_text = self.generate_answer(question_text)
 
         answer = Answer(
-            text=response_text,
+            content=response_text,
             question_id=question.id,
             user_id=None,
             author_type="AGENT",
@@ -36,3 +39,15 @@ class AgentService:
         db.session.commit()
 
         return answer
+
+
+_default_agent_service = AgentService(strategy=MockLLMStrategy())
+
+
+def process_question_for_agent(question):
+    if question is None:
+        return None
+    try:
+        return _default_agent_service.process_question(question)
+    except Exception:
+        return None
