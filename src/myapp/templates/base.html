@@ -32,7 +32,7 @@
                             <span class="nav-link text-info">👤 {{ session.get('user_email') }}</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('web.logout') }}">Cerrar Sesión</a>
+                            <a class="nav-link text danger" href="{{ url_for('web.logout_view') }}">Cerrar Sesión</a>
                         </li>
                     {% else %}
                         <li class="nav-item">

@@ -16,7 +16,7 @@
             {% endfor %}
         </div>
 
-        <p class="fs-5">{{ question.content }}</p>
+        <p class="fs-5">{{ question.text }}</p>
     </div>
 </div>
 
@@ -29,9 +29,9 @@
                 <span class="badge bg-success mb-2">✔ Respuesta Aceptada</span>
             {% endif %}
 
-            <p class="card-text">{{ ans.content }}</p>
+            <p class="card-text">{{ ans.text }}</p>
 
-            {% if session.get('user_id') == question.author_id and not ans.is_accepted %}
+            {% if session.get('user_id') == question.user_id and not ans.is_accepted %}
             <form method="POST" action="{{ url_for('web.accept_answer_view', answer_id=ans.id) }}" class="d-inline">
                 <button type="submit" class="btn btn-sm btn-outline-success">Marcar como Aceptada</button>
             </form>

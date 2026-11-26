@@ -1,19 +1,13 @@
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 
 from myapp.extensions import db
+from myapp.models.answer import Answer
 from myapp.models.question import Question
 from myapp.models.tag import Tag
-from myapp.models.user import TUsuario, User
+from myapp.models.user import User
 from myapp.services.agent_service import process_question_for_agent
 
 web_bp = Blueprint("web", __name__)
-
-
-def _find_user_by_email(email: str):
-    user = User.query.filter_by(email=email).first()
-    if user is None and TUsuario is not None:
-        user = TUsuario.query.filter_by(email=email).first()
-    return user
 
 
 @web_bp.get("/")
@@ -40,9 +34,9 @@ def create_question_view():
 
         question = Question(
             title=title,
-            content=content,
-            author_id=user_id,
-            category_id=cat_id,
+            text=content,
+            user_id=session.get("user_id"),
+            category_id=category_id if category_id else None,
         )
 
         # Procesar Tags
@@ -73,27 +67,60 @@ def question_detail(question_id: int):
     return render_template("questions/detail.html", question=question)
 
 
+@web_bp.post("/preguntas/<int:question_id>/respuestas")
+def add_answer_view(question_id: int):
+    question = Question.query.get_or_404(question_id)
+    text = (request.form.get("text") or request.form.get("content") or "").strip()
+
+    if not text:
+        flash("El texto de la respuesta es obligatorio.", "error")
+        return redirect(url_for("web.question_detail", question_id=question.id))
+
+    user_id = session.get("user_id") or 1
+
+    answer = Answer(
+        text=text,
+        question_id=question.id,
+        user_id=user_id,
+        author_type="USER",
+        is_accepted=False,
+    )
+    db.session.add(answer)
+    db.session.commit()
+
+    flash("Respuesta publicada con éxito.", "success")
+    return redirect(url_for("web.question_detail", question_id=question.id))
+
+
+@web_bp.post("/preguntas/<int:question_id>/respuestas/<int:answer_id>/aceptar")
+def accept_answer_view(question_id: int, answer_id: int):
+    question = Question.query.get_or_404(question_id)
+    answer = Answer.query.filter_by(id=answer_id, question_id=question.id).first_or_404()
+
+    for other in question.answers:
+        other.is_accepted = False
+    answer.is_accepted = True
+    db.session.commit()
+
+    flash("Respuesta marcada como aceptada.", "success")
+    return redirect(url_for("web.question_detail", question_id=question.id))
+
+
 @web_bp.route("/login", methods=["GET", "POST"])
 def login_view():
     if request.method == "POST":
         email = (request.form.get("email") or "").strip().lower()
         password = request.form.get("password") or ""
-        user = _find_user_by_email(email)
 
-        valid_password = False
-        if user is not None:
-            if hasattr(user, "check_password"):
-                valid_password = user.check_password(password)
-            elif hasattr(user, "password"):
-                valid_password = user.password == password
+        usuario = User.query.filter_by(email=email).first()
+        if not usuario or not usuario.check_password(password):
+            flash("Correo o contraseña incorrectos.", "error")
+            return redirect(url_for("web.login_view"))
 
-        if user is not None and valid_password:
-            session["user_id"] = user.id
-            session["user_email"] = getattr(user, "email", email)
-            flash("Sesión iniciada correctamente", "success")
-            return redirect(url_for("web.list_questions"))
-
-        flash("Credenciales inválidas", "error")
+        session["user_id"] = usuario.id
+        session["user_email"] = usuario.email
+        flash("¡Sesión iniciada con éxito!", "success")
+        return redirect(url_for("web.list_questions"))
 
     return render_template("auth/login.html")
 
@@ -108,23 +135,18 @@ def register_view():
             flash("Email y contraseña son requeridos", "error")
             return render_template("auth/register.html")
 
-        if _find_user_by_email(email) is not None:
-            flash("El email ya está registrado", "error")
-            return render_template("auth/register.html")
+        if User.query.filter_by(email=email).first():
+            flash("El correo electrónico ya está registrado.", "error")
+            return redirect(url_for("web.register_view"))
 
-        user = User(email=email)
-        if hasattr(user, "set_password"):
-            user.set_password(password)
-        elif hasattr(user, "password"):
-            user.password = password
+        nuevo_usuario = User(email=email)
+        nuevo_usuario.set_password(password)
 
-        db.session.add(user)
+        db.session.add(nuevo_usuario)
         db.session.commit()
 
-        session["user_id"] = user.id
-        session["user_email"] = user.email
-        flash("Cuenta creada con éxito", "success")
-        return redirect(url_for("web.list_questions"))
+        flash("¡Cuenta creada exitosamente! Por favor iniciá sesión.", "success")
+        return redirect(url_for("web.login_view"))
 
     return render_template("auth/register.html")
 
