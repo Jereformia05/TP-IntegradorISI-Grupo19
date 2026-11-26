@@ -1,4 +1,3 @@
-
 from myapp.extensions import db
 from myapp.models.answer import Answer
 from myapp.services.strategies import LLMStrategy
